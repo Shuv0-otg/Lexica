@@ -210,7 +210,7 @@ const bk=document.getElementById('bk');if(bk)bk.onclick=()=>{if(live()&&!ask())r
 const NAV=[['home','Home'],['learn','Learn'],['alpha','A–Z Test'],['random','Random Test'],['progress','Progress']];
 const NI={home:'home',learn:'learn',alpha:'alpha',random:'rand',progress:'prog'};
 const go=r=>{if(location.hash==='#'+r)route();else location.hash=r};
-let T=null,L={q:'',k:'all',let:'',v:'all',o:'az',i:0,rec:false},A={size:25,let:''},R={n:20,w:20,k:['Meaning','Gap','Bangla','Other'],p:'all'},timer;
+let T=null,L={q:'',k:'all',let:'',v:'all',o:'az',i:0,rec:false},A={size:25,let:''},R={n:20,w:20,k:['Meaning','Gap','Bangla','Other'],p:['all']},timer;
 if(S.pos){const j=ALPHA.findIndex(q=>q.n===S.pos);if(j>=0)L.i=j}
 function route(){clearInterval(timer);const r=location.hash.slice(1)||'home';const v=NAV.some(x=>x[0]===r)?r:'home';
  $('#nd').innerHTML=NAV.map(([k,t])=>`<a href="${k==='home'?'index.html':'#'+k}" class="${k===v&&!T?'on':''}">${t}</a>`).join('');
@@ -268,18 +268,18 @@ function alpha(){const l=A.let?ALPHA.filter(q=>ltr(q)===A.let):ALPHA,ch=[];for(l
  document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{A.size=+b.dataset.s;alpha()});document.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{A.let=A.let===b.dataset.l?'':b.dataset.l;alpha()});
  document.querySelectorAll('.set').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;start(ch[i],`A–Z · Set ${i+1}${A.let?' ('+A.let+')':''}`,'alpha',`${A.let||'all'}:${A.size}:${i}`)})}
 /* RANDOM */
-const RP=()=>{let l=D.filter(q=>R.k.includes(q.k));if(R.p==='unk')l=l.filter(q=>!has('known',q.n));if(R.p==='fav')l=l.filter(q=>has('fav',q.n));if(R.p==='mist')l=l.filter(q=>has('mist',q.n));return l};
+const srcOK=q=>(R.p.includes('unk')&&!has('known',q.n))||(R.p.includes('fav')&&has('fav',q.n))||(R.p.includes('mist')&&has('mist',q.n));const RP=()=>{const l=D.filter(q=>R.k.includes(q.k));return R.p.includes('all')?l:l.filter(srcOK)};
 function random(){const p=RP().length;R.n=Math.max(1,Math.min(R.w,p||1));
  A$(`<h2 class="s" style="margin-top:8px">Random test</h2><p class="mut" style="margin:0 0 14px">Tell me how many questions you want. Each test is a fresh random draw.</p>
  <div class="card" style="margin-top:0"><b>Number of questions</b><div class="row" style="margin:10px 0"><div class="cnt"><button class="ico" id="mn" aria-label="Fewer">−</button><input type="number" id="nn" min="1" max="${p}" value="${R.n}" inputmode="numeric"><button class="ico" id="pl" aria-label="More">+</button></div>
  ${[10,20,30,50,100].map(n=>`<button class="chip ${R.n===n?'on':''}" data-n="${n}" ${n>p?'disabled':''}>${n}</button>`).join('')}<button class="chip ${R.n===p?'on':''}" data-n="${p}" ${p?'':'disabled'}>All ${p.toLocaleString()}</button></div>
  <b>Question types</b><div class="row" style="margin:10px 0">${['Meaning','Gap','Bangla','Other'].map(k=>`<button class="chip ${R.k.includes(k)?'on':''}" data-t="${k}">${k==='Word'?'Word pair':k}</button>`).join('')}</div>
- <b>Draw from</b><div class="row" style="margin:10px 0">${[['all','Everything'],['unk','Not yet known'],['fav','Saved'],['mist','My mistakes']].map(([k,t])=>`<button class="chip ${R.p===k?'on':''}" data-p="${k}">${t}</button>`).join('')}</div>
+ <b>Draw from</b> <span class="mut" style="font-weight:400;font-size:13px">(pick one or more)</span><div class="row" style="margin:10px 0">${[['all','Everything'],['unk','Not yet known'],['fav','Saved'],['mist','My mistakes']].map(([k,t])=>`<button class="chip ${R.p.includes(k)?'on':''}" data-p="${k}">${t}</button>`).join('')}</div>
  ${mkBox()}<div class="row" style="margin-top:14px"><span class="mut">${p?p.toLocaleString()+' questions available':'No questions match. Pick at least one type or a different source.'}</span><span class="sp"></span><button class="btn p" id="go" ${p?'':'disabled'}>Start test</button></div></div>`);
  const nn=$('#nn');nn.onchange=()=>{R.w=Math.floor(+nn.value)||1;random()};$('#mn').onclick=()=>{R.w=R.n-1;random()};$('#pl').onclick=()=>{R.w=R.n+1;random()};
  document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{R.w=+b.dataset.n;random()});
  document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const k=b.dataset.t;R.k=R.k.includes(k)?R.k.filter(x=>x!==k):[...R.k,k];random()});
- document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{R.p=b.dataset.p;random()});
+ document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const k=b.dataset.p;if(k==='all')R.p=['all'];else{let a=R.p.filter(x=>x!=='all');a=a.includes(k)?a.filter(x=>x!==k):[...a,k];R.p=a.length?a:['all']}random()});
  $('#go').onclick=()=>{const c=Math.min(Math.max(1,Math.floor(+nn.value)||R.n),RP().length);R.w=R.n=c;start(shuf(RP()).slice(0,c),`Random · ${c} question${c>1?'s':''}`,'rand')}}
 /* TEST ENGINE */
 function start(list,title,mode,ck){if(!list.length)return;RF='all';T={list,title,mode,ck,i:0,a:[],t0:Date.now(),fin:false,mk:(S.mk||[1,0]).slice()};quiz()}
