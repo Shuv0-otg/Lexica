@@ -81,11 +81,45 @@ a.tile{text-decoration:none;color:inherit;position:relative}
 .tile .meta{display:flex;justify-content:space-between;width:100%;margin-top:14px;font-size:13px;color:var(--mut)}
 .tile .bar{width:100%;margin-top:6px}
 .tile .go{margin-top:12px;font-weight:600;font-size:14px;color:var(--pr)}
+
+.mix{position:relative;display:block;overflow:hidden;text-decoration:none;color:#fff;border-radius:24px;padding:26px 22px 22px;margin:14px 0 18px;isolation:isolate;
+background:linear-gradient(115deg,#5b3df5,#0ea5e9,#10b981,#f59e0b,#ec4899,#5b3df5);background-size:300% 300%;animation:mixbg 9s ease-in-out infinite;
+box-shadow:0 14px 40px -12px rgba(91,61,245,.65),0 0 0 1px rgba(255,255,255,.18) inset;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.mix:hover{transform:translateY(-4px) scale(1.012);box-shadow:0 22px 50px -12px rgba(236,72,153,.6),0 0 0 1px rgba(255,255,255,.3) inset}
+.mix:active{transform:scale(.975)}
+.mix::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.38) 50%,transparent 65%);transform:translateX(-120%);animation:mixshine 4.2s ease-in-out infinite}
+.mix::after{content:"";position:absolute;width:260px;height:260px;right:-90px;top:-110px;border-radius:50%;z-index:-1;background:radial-gradient(circle,rgba(255,255,255,.35),transparent 65%);animation:mixglow 5s ease-in-out infinite}
+.mix .tag{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,0,0,.28);padding:6px 12px;border-radius:99px;backdrop-filter:blur(6px)}
+.mix .tag i{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.8);animation:mixping 1.6s infinite}
+.mix h2{margin:14px 0 6px;font:700 32px/1.1 Newsreader,Georgia,serif;text-shadow:0 2px 14px rgba(0,0,0,.28)}
+.mix p{margin:0;font-size:16px;line-height:1.45;color:rgba(255,255,255,.94);max-width:34em}
+.mix .hook{margin-top:12px;font-weight:600;font-size:14.5px;background:rgba(255,255,255,.2);display:inline-block;padding:7px 12px;border-radius:12px;animation:mixwob 3s ease-in-out infinite}
+.mix .die{position:absolute;right:16px;top:58px;width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.22);display:grid;place-items:center;backdrop-filter:blur(6px);animation:mixspin 7s linear infinite}
+.mix:hover .die{animation-duration:1.6s}
+.mix .die svg{width:34px;height:34px}
+.mix .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.mix .chips span{font-size:12.5px;font-weight:600;color:#1f1b3a;padding:6px 11px;border-radius:99px;background:var(--c);box-shadow:0 4px 10px -4px rgba(0,0,0,.4);animation:mixbob 2.6s ease-in-out infinite;animation-delay:var(--d)}
+.mix .cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px}
+.mix .go2{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#2d1b8a;font-weight:800;font-size:17px;padding:14px 22px;border-radius:16px;box-shadow:0 8px 20px -6px rgba(0,0,0,.45);animation:mixpulse 2.2s ease-in-out infinite}
+.mix .go2 b{display:inline-block;transition:transform .25s}.mix:hover .go2 b{transform:translateX(7px)}
+.mix .cnt{font-weight:700;font-size:14px;text-align:right;line-height:1.25;opacity:.95}.mix .cnt strong{display:block;font:700 26px Newsreader,Georgia,serif}
+@keyframes mixbg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes mixshine{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+@keyframes mixglow{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.25);opacity:1}}
+@keyframes mixping{70%{box-shadow:0 0 0 9px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+@keyframes mixbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes mixpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes mixspin{to{transform:rotate(360deg)}}
+@keyframes mixwob{0%,100%{transform:rotate(0)}25%{transform:rotate(-1.5deg)}75%{transform:rotate(1.5deg)}}
+@media(prefers-reduced-motion:reduce){.mix,.mix *,.mix::before,.mix::after{animation:none!important}}
+@media(max-width:420px){.mix h2{font-size:28px;max-width:75%}.mix .cnt{display:none}.mix .go2{width:100%;justify-content:center}}
 </style></head><body>
 <header class="top"><div><a class="logo" href="index.html"><i>L</i>Lexica</a><span style="flex:1"></span><button class="ib" id="th" title="Toggle theme" aria-label="Toggle theme"></button></div></header>
 <main class="wrap">
 <section class="hero"><p class="eyebrow">Admission English</p><h1>Choose a subject to practise.</h1><p>Flashcards to study and mini tests to take, for each part of the university admission English paper.</p></section>
+<a class="mix" id="mix" href="lexica-mixed.html"><span class="tag"><i></i>Main challenge</span><span class="die" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></span><h2>Mixed Random Test</h2><p>All 8 subjects thrown into one test. You never know what comes next. Are you ready?</p><div class="hook" id="mixhook"></div><div class="chips" id="mixchips"></div><div class="cta"><span class="go2">Take the test <b>›</b></span><span class="cnt"><strong id="mixn">0</strong>questions waiting</span></div></a>
 <div class="stats"><div class="stat"><b id="sq">0</b><span>questions</span></div><div class="stat"><b id="sk">0</b><span>marked known</span></div><div class="stat"><b id="ss">0</b><span>subjects</span></div></div>
+
 <div class="grid" id="grid"></div>
 </main>
 <script>
@@ -93,10 +127,16 @@ const APPS=[['lexica-mixed.html','lexicaMixed','Mixed Random Test','One test dra
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}};
 let tq=0,tk=0;
-$('#grid').innerHTML=APPS.map(([f,k,n,d,N],i)=>{const S=read(k),kn=(S.known||[]).length,st=S.last||kn>0||(S.hist||[]).length;if(f!=='lexica-mixed.html'){tq+=N;tk+=kn}
- return `<a class="tile" href="${f}"><span class="num">${(i?String(i).padStart(2,'0'):'Mix')}</span><h3>${esc(n)}</h3><p>${esc(d)}</p><div class="meta"><span>${N.toLocaleString()} questions</span><span>${kn}/${N} known</span></div><div class="bar"><i style="width:${Math.round(kn/N*100)}%"></i></div><span class="go">${st?'Continue':'Start'} ›</span></a>`}).join('');
+$('#grid').innerHTML=APPS.slice(1).map(([f,k,n,d,N],i)=>{const S=read(k),kn=(S.known||[]).length,st=S.last||kn>0||(S.hist||[]).length;if(f!=='lexica-mixed.html'){tq+=N;tk+=kn}
+ return `<a class="tile" href="${f}"><span class="num">${String(i+1).padStart(2,'0')}</span><h3>${esc(n)}</h3><p>${esc(d)}</p><div class="meta"><span>${N.toLocaleString()} questions</span><span>${kn}/${N} known</span></div><div class="bar"><i style="width:${Math.round(kn/N*100)}%"></i></div><span class="go">${st?'Continue':'Start'} ›</span></a>`}).join('');
 $('#sq').textContent=tq.toLocaleString();$('#sk').textContent=tk.toLocaleString();$('#ss').textContent=APPS.length-1;
-let th='';try{th=localStorage.getItem('lexicaIndexTheme')||''}catch(e){}
+
+{const mx=APPS[0],cols=['#ff8a8a','#ffd166','#6ee7b7','#7dd3fc','#c4b5fd','#f9a8d4','#5eead4','#fdba74'];
+$('#mixchips').innerHTML=APPS.slice(1).map((a,i)=>`<span style="--c:${cols[i%8]};--d:${(i*.22).toFixed(2)}s">${esc(a[2])}</span>`).join('');
+let ms=0;APPS.slice(1).forEach(a=>{ms+=(read(a[1]).mist||[]).length});
+$('#mixhook').textContent=ms?`🔥 ${ms} mistake${ms>1?'s':''} waiting to be fixed`:'⚡ Different topics, one test. Zero boredom.';
+const el=$('#mixn'),T=mx[4],t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1100);el.textContent=Math.round(T*(1-Math.pow(1-p,3))).toLocaleString();if(p<1)requestAnimationFrame(f)})(t0);}
+ let th='';try{th=localStorage.getItem('lexicaIndexTheme')||''}catch(e){}
 const IC='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
 function theme(){const r=document.documentElement;th?r.dataset.theme=th:r.removeAttribute('data-theme');$('#th').innerHTML=IC}
 $('#th').onclick=()=>{const dark=th?th==='dark':matchMedia('(prefers-color-scheme:dark)').matches;th=dark?'light':'dark';try{localStorage.setItem('lexicaIndexTheme',th)}catch(e){}theme()};
